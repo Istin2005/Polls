@@ -21,12 +21,94 @@ Execute Django admin and create details for polls.
 
 ## PROGRAM
 
+### views.py
+
+```
+from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import get_object_or_404, render
+from django.urls import reverse
+from django.views import generic
+from django.utils import timezone
+
+from .models import Choice, Question
+
+def owner(request):
+    return HttpResponse("Hello, world. 4aca7a97 is the polls owner.")
+
+class IndexView(generic.ListView):
+    template_name = 'polls/index.html'
+    context_object_name = 'latest_question_list'
+
+    def get_queryset(self):
+        """
+        Return the last five published questions (not including those set to be
+        published in the future).
+        """
+        return Question.objects.filter(
+            pub_date__lte=timezone.now()
+        ).order_by('-pub_date')[:5]
+
+class DetailView(generic.DetailView):
+    model = Question
+    template_name = 'polls/detail.html'
+
+    def get_queryset(self):
+        """
+        Excludes any questions that aren't published yet.
+        """
+        return Question.objects.filter(pub_date__lte=timezone.now())
+
+class ResultsView(generic.DetailView):
+    model = Question
+    template_name = 'polls/results.html'
+
+def vote(request, question_id):
+    question = get_object_or_404(Question, pk=question_id)
+    try:
+        selected_choice = question.choice_set.get(pk=request.POST['choice'])
+    except (KeyError, Choice.DoesNotExist):
+        # Redisplay the question voting form.
+        return render(request, 'polls/detail.html', {
+            'question': question,
+            'error_message': "You didn't select a choice.",
+        })
+    else:
+        selected_choice.votes += 1
+        selected_choice.save()
+        # Always return an HttpResponseRedirect after successfully dealing
+        # with POST data. This prevents data from being posted twice if a
+        # user hits the Back button.
+        return HttpResponseRedirect(reverse('polls:results', args=(question.id,)))
+```
+
+### urls.py
+
+```
+from django.urls import path
+
+from . import views
+
+app_name = 'polls'
+urlpatterns = [
+    path('', views.IndexView.as_view(), name='index'),
+    path('owner/', views.owner, name='owner'),
+    path('<int:pk>/', views.DetailView.as_view(), name='detail'),
+    path('<int:pk>/results/', views.ResultsView.as_view(), name='results'),
+    path('<int:question_id>/vote/', views.vote, name='vote'),
+]
+```
 
 
 ## OUTPUT
+![Screenshot (201)](https://github.com/user-attachments/assets/1e62aa9b-13da-462a-90d2-f128bec82f9c)
+![Screenshot (201)](https://github.com/user-attachments/assets/b0bb15f1-07a7-4f6c-b535-08108822d30d)
+![Screenshot (206)](https://github.com/user-attachments/assets/713d57fa-a53f-48f1-8f32-0d12d34c0b8e)
+![Screenshot (215)](https://github.com/user-attachments/assets/477dfb03-57b7-46a3-9c80-0eb37b196b20)
+
+
 
 
 ## COURSERA GRADE
-
+![Screenshot (214)](https://github.com/user-attachments/assets/f62d5d5f-352d-4272-a9de-2a3ca96e5d87)
 ## RESULT
 Thus the program for creating a polls using Django has been executed successfully.
