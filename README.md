@@ -101,7 +101,9 @@ urlpatterns = [
 
 ## OUTPUT
 ![Screenshot (201)](https://github.com/user-attachments/assets/1e62aa9b-13da-462a-90d2-f128bec82f9c)
-![Screenshot (216)](https://github.com/user-attachments/assets/afee0b29-2a62-44d7-a375-208b8b6f1bf9)
+![Screenshot (251)](https://github.com/user-attachments/assets/e8735e7b-52c6-4f8f-93db-51a09f53e349)
+
+
 
 ![Screenshot (206)](https://github.com/user-attachments/assets/713d57fa-a53f-48f1-8f32-0d12d34c0b8e)
 ![Screenshot (214)](https://github.com/user-attachments/assets/f62d5d5f-352d-4272-a9de-2a3ca96e5d87)
