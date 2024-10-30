@@ -1,5 +1,5 @@
 # Ex02 Django Polls
-## Date: 
+## Date: 17/10/2024
 
 ## AIM
 To develop a Django application to implement polls.
